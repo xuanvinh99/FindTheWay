@@ -103,8 +103,8 @@ public class Zombie1 : MonoBehaviour
                 {
                     playerBody.playerHitDamage(giveDamage);
                 }
-                anim.SetBool("Attacking", false);
-                anim.SetBool("Walking", true);
+                anim.SetBool("Attacking", true);
+                anim.SetBool("Walking", false);
                 anim.SetBool("Running", false);
                 anim.SetBool("Died", false);
             }

@@ -98,6 +98,7 @@ public class Rifle : MonoBehaviour
 
             ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
             Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
+            Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
 
             if (objectToHit != null)
             {
@@ -108,6 +109,12 @@ public class Rifle : MonoBehaviour
             else if (zombie1 != null)
             {
                 zombie1.zombieHitDamage(giveDamageOf);
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            } 
+            else if (zombie2 != null)
+            {
+                zombie2.zombieHitDamage(giveDamageOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 Destroy(goreEffectGo, 1f);
             } 
