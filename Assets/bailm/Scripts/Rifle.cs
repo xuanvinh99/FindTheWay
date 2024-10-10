@@ -98,6 +98,7 @@ public class Rifle : MonoBehaviour
 
             ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
             Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
+            Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
 
             if (objectToHit != null)
             {
@@ -111,6 +112,12 @@ public class Rifle : MonoBehaviour
                 GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 Destroy(goreEffectGo, 1f);
             } 
+            else if (zombie2 != null)
+            {
+                zombie2.zombieHitDamage(giveDamageOf);
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            } 
         }
     }
 
@@ -120,6 +127,7 @@ public class Rifle : MonoBehaviour
         player.playerSprint = 0f;
         setReloading = true;
         Debug.Log("Reloading...");
+        //play reload sound
         animator.SetBool("Reloading", true);
         yield return new WaitForSeconds(reloadingTime);
         animator.SetBool("Reloading", false);

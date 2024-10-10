@@ -19,7 +19,7 @@ public class SwitchCamera : MonoBehaviour
         {
             animator.SetBool("Idle", false);
             animator.SetBool("IdleAim", true);
-            animator.SetBool("FireWalk", true);
+            animator.SetBool("RifleWalk", true);
             animator.SetBool("Walk", true);
 
             ThirdPersonCam.SetActive(false);
@@ -31,7 +31,7 @@ public class SwitchCamera : MonoBehaviour
         {
             animator.SetBool("Idle", false);
             animator.SetBool("IdleAim", true);
-            animator.SetBool("FireWalk", false);
+            animator.SetBool("RifleWalk", false);
             animator.SetBool("Walk", false);
 
             ThirdPersonCam.SetActive(false);
@@ -43,7 +43,7 @@ public class SwitchCamera : MonoBehaviour
         {
             animator.SetBool("Idle", true);
             animator.SetBool("IdleAim", false);
-            animator.SetBool("FireWalk", false);
+            animator.SetBool("RifleWalk", false);
 
             ThirdPersonCam.SetActive(true);
             ThirdPersonCanvas.SetActive(true);

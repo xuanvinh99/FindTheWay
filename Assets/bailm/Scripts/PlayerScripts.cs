@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +7,9 @@ public class PlayerScripts : MonoBehaviour
     [Header("Player Movement")]
     public float playerSpeed = 1.9f;
     public float playerSprint = 3f;
+    [Header("Player Health Things")]
+    private float playerHealth = 120f;
+    public float presentHealth;
 
     [Header("Player Script Cameras")]
     public Transform playerCamera;
@@ -26,6 +28,12 @@ public class PlayerScripts : MonoBehaviour
     bool onSurface;
     public float surfaceDistance = 0.4f;
     public LayerMask surfaceMask;
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        presentHealth = playerHealth;
+    }
 
     private void Update()
     {
@@ -116,9 +124,17 @@ public class PlayerScripts : MonoBehaviour
             }
         }
     }
-
-    internal void playerHitDamage(float giveDamage)
+    public void playerHitDamage(float takeDamage)
     {
-        throw new NotImplementedException();
+        presentHealth -= takeDamage;
+        if(presentHealth <=0)
+        {
+            playerDie();
+        }
+    }
+    private void playerDie()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Object.Destroy(gameObject, 1.0f);
     }
 }
