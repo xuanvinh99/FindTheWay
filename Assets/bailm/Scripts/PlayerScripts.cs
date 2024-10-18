@@ -10,6 +10,7 @@ public class PlayerScripts : MonoBehaviour
     [Header("Player Health Things")]
     private float playerHealth = 120f;
     public float presentHealth;
+    public GameObject playerDamage;
 
     [Header("Player Script Cameras")]
     public Transform playerCamera;
@@ -127,14 +128,29 @@ public class PlayerScripts : MonoBehaviour
     public void playerHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-        if(presentHealth <=0)
+        StartCoroutine(PlayerDamage());
+
+        if (presentHealth <= 0)
         {
             playerDie();
         }
     }
+
+    private void StartCoroutine(IEnumerable enumerable)
+    {
+        throw new System.NotImplementedException();
+    }
+
     private void playerDie()
     {
         Cursor.lockState = CursorLockMode.None;
         Object.Destroy(gameObject, 1.0f);
+    }
+
+    IEnumerable PlayerDamage()
+    {
+        playerDamage.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        playerDamage.SetActive(false);
     }
 }

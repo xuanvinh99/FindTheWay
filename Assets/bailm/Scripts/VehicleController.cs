@@ -38,17 +38,24 @@ public class VehicleController : MonoBehaviour
     public GameObject ThirdPersonCam;
     public GameObject ThirdPersonCanvas;
     public GameObject PlayerCharacter;
-    
+
+    [Header("Vehice Hit Var")]
+    public Camera cam;
+    public float hitRange = 2f;
+    private float giveDamageOf = 100f;
+    public GameObject goreEffect;
+
+
     private void Update()
     {
-        if(Vector3.Distance(transform.position, player.transform.position)< radius)
+        if (Vector3.Distance(transform.position, player.transform.position) < radius)
         {
-            if(Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 isOpened = true;
                 radius = 5000f;
             }
-            else if(Input.GetKeyDown(KeyCode.G))
+            else if (Input.GetKeyDown(KeyCode.G))
             {
                 player.transform.position = vehicleDoor.transform.position;
                 isOpened = false;
@@ -56,7 +63,7 @@ public class VehicleController : MonoBehaviour
             }
         }
 
-        if(isOpened == true)
+        if (isOpened == true)
         {
             ThirdPersonCam.SetActive(false);
             ThirdPersonCanvas.SetActive(false);
@@ -67,8 +74,9 @@ public class VehicleController : MonoBehaviour
             MoveVehicle();
             VehicleSteering();
             ApplyBreaks();
+            HitZombie();
         }
-        else if(isOpened == false)
+        else if (isOpened == false)
         {
             ThirdPersonCam.SetActive(true);
             ThirdPersonCanvas.SetActive(true);
@@ -85,7 +93,7 @@ public class VehicleController : MonoBehaviour
         backRightWheelCollider.motorTorque = presentAcceleration;
         backLeftWheelCollider.motorTorque = presentAcceleration;
 
-        presentAcceleration = acceleartionForce * - Input.GetAxis("Vertical");
+        presentAcceleration = acceleartionForce * -Input.GetAxis("Vertical");
     }
 
     void VehicleSteering()
@@ -106,7 +114,7 @@ public class VehicleController : MonoBehaviour
         Quaternion roration;
 
         WC.GetWorldPose(out position, out roration);
-        
+
         WT.position = position;
         WT.rotation = roration;
 
@@ -114,7 +122,7 @@ public class VehicleController : MonoBehaviour
 
     void ApplyBreaks()
     {
-        if(Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
             presentBreakForce = breakingForce;
         else
             presentBreakForce = 0f;
@@ -124,4 +132,32 @@ public class VehicleController : MonoBehaviour
         backRightWheelCollider.brakeTorque = presentBreakForce;
         backLeftWheelCollider.brakeTorque = presentBreakForce;
     }
+    void HitZombie()
+    {
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, hitRange))
+        {
+            Debug.Log(hitInfo.transform.name);
+
+            Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
+            Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
+
+            if (zombie1 != null)
+            {
+                zombie1.zombieHitDamage(giveDamageOf);
+                zombie1.GetComponent<CapsuleCollider>().enabled = false;
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            }
+            else if (zombie2 != null)
+            {
+                zombie2.zombieHitDamage(giveDamageOf);
+                zombie2.GetComponent<CapsuleCollider>().enabled = false;
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            }
+        }
+    }
+
 }
