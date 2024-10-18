@@ -8,6 +8,6 @@ public class NutPlay : MonoBehaviour
    
     public void ChangeScene()
     {
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }
