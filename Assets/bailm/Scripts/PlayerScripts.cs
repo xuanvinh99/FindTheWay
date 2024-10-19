@@ -136,21 +136,16 @@ public class PlayerScripts : MonoBehaviour
         }
     }
 
-    private void StartCoroutine(IEnumerable enumerable)
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void playerDie()
     {
         Cursor.lockState = CursorLockMode.None;
         Object.Destroy(gameObject, 1.0f);
     }
 
-    IEnumerable PlayerDamage()
+    IEnumerator PlayerDamage()
     {
         playerDamage.SetActive(true);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(1.8f);
         playerDamage.SetActive(false);
     }
 }
