@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 24674021}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 736503039}
+        m_TargetAssemblyTypeName: PlayFabCode, Assembly-CSharp
+        m_MethodName: RegisterClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &24674021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,13 +280,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125440320}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 674.70575, y: 263.49265, z: -68.70642}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 734.48663, y: -384.2696, z: -172.55241}
+  m_LocalScale: {x: 2.5114453, y: 2.5114453, z: 2.5114453}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1762518798}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1558410530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &242208096
 GameObject:
@@ -741,7 +753,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 347394762}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 736503039}
+        m_TargetAssemblyTypeName: PlayFabCode, Assembly-CSharp
+        m_MethodName: LoginClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &347394762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,6 +1305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 736503038}
+  - component: {fileID: 736503039}
   m_Layer: 0
   m_Name: PlayFabControllers
   m_TagString: Untagged
@@ -1303,6 +1328,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &736503039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736503037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36536ecf236afd943862136549ecb205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Username: {fileID: 1639265444}
+  Email: {fileID: 1435216210}
+  Password: {fileID: 1727587277}
+  ErrorMessage: {fileID: 1393267319}
+  SceneName: Scene_A
 --- !u!1 &1265503786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2143,6 +2185,7 @@ RectTransform:
   - {fileID: 24674019}
   - {fileID: 347394760}
   - {fileID: 1393267318}
+  - {fileID: 125440321}
   m_Father: {fileID: 1763791660}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3107,6 +3150,5 @@ SceneRoots:
   - {fileID: 1747813481}
   - {fileID: 554334974}
   - {fileID: 1763791660}
-  - {fileID: 125440321}
   - {fileID: 1265503788}
   - {fileID: 736503038}
