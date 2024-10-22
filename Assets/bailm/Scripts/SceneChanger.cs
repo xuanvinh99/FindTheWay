@@ -22,6 +22,6 @@ public class ScaneChanger : MonoBehaviour
 
     private void OnVideoEnd(VideoPlayer vp)
     {
-        SceneManager.LoadScene("Manhinhchao");
+        SceneManager.LoadScene("Menu");
     }
 }
