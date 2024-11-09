@@ -28,7 +28,7 @@ public class VehicleController : MonoBehaviour
     private float presentTurnAngle = 0f;
 
     [Header("Vehicle Secuirty")]
-    public PlayerScripts player;
+    public PlayerScript2 player2;
     private float radius = 5f;
     private bool isOpened = false;
 
@@ -48,7 +48,7 @@ public class VehicleController : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < radius)
+        if (Vector3.Distance(transform.position, player2.transform.position) < radius)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -57,7 +57,7 @@ public class VehicleController : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.G))
             {
-                player.transform.position = vehicleDoor.transform.position;
+                player2.transform.position = vehicleDoor.transform.position;
                 isOpened = false;
                 radius = 5f;
             }
