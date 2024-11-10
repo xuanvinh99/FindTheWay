@@ -6,6 +6,10 @@ TagManager:
   tags:
   - FxTemporaire
   - Player2
+  - HandGunPickUp
+  - ShortGunPickUp
+  - UziPickUp
+  - BazookaPickUp
   layers:
   - Default
   - TransparentFX
