@@ -50,6 +50,9 @@ public class Shotgun : MonoBehaviour
     public ParticleSystem muzzleSpark;
     public GameObject metalEffect;
 
+    [Header("Sounds && UI")]
+    bool ShotgunActive = true;
+
     private void Awake()
     {
         transform.SetParent(hand);
@@ -59,6 +62,10 @@ public class Shotgun : MonoBehaviour
 
     private void Update()
     {
+        if(ShotgunActive == true)
+        {
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ShotgunAnimator");
+        }
         onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask);
         if (onSurface && velocity.y < 0)
         {
@@ -190,6 +197,8 @@ public class Shotgun : MonoBehaviour
             Debug.Log(hitInfo.transform.name);
 
             Opject obj = hitInfo.transform.GetComponent<Opject>();
+            Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
+            Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
 
             if(obj != null)
             {
@@ -197,6 +206,18 @@ public class Shotgun : MonoBehaviour
                 GameObject metalEffectGo = Instantiate(metalEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 Destroy(metalEffectGo, 1f);
             }
+            else if (zombie1 != null)
+            {
+                zombie1.zombieHitDamage(giveDamage);
+                GameObject goreEffectGo = Instantiate(metalEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            }
+            else if (zombie2 != null)
+            {
+                zombie2.zombieHitDamage(giveDamage);
+                GameObject goreEffectGo = Instantiate(metalEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(goreEffectGo, 1f);
+            } 
         }
     }
     IEnumerator Reload()
