@@ -10,6 +10,10 @@ TagManager:
   - ShortGunPickUp
   - UziPickUp
   - BazookaPickUp
+  - HandgunUI
+  - ShotgunUI
+  - uziUI
+  - BazookaUI
   layers:
   - Default
   - TransparentFX

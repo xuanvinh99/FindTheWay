@@ -12,45 +12,51 @@ public class PickupItem : MonoBehaviour
 
 [Header("Player Info")]
 public Player2 player2;
+public Inventory inventory;
 private void Start(){
     ItemToPick = GameObject.FindWithTag(ItemTag);
 }
 private void Update()
 {
-    if(Vector3.Distance(transform.position,player2.transform.position)<itemRadius){
-        Debug.Log("Inside the radius");
-    }
-    if(Input.GetKeyDown("f")){
-        if(itemPrice > player2.playerMoney)
+    if(Vector3.Distance(transform.position, player2.transform.position)<itemRadius)
+    {
+        if(Input.GetKeyDown("f"))
         {
-            Debug.Log("You are boke");
-            //show UI
-        }
-        else{
-            if(ItemTag == "HandGunPickUp"){
-                player2.playerMoney -= itemPrice;
-
-                Debug.Log(ItemTag);
+            if(itemPrice > player2.playerMoney)
+            {
+                Debug.Log("You are boke");
+                //show UI
             }
-            else if(ItemTag == "ShortGunPickUp"){
-                 player2.playerMoney -= itemPrice;
-
-                Debug.Log(ItemTag);
-            }
-                  else if(ItemTag == "UziPickUp"){
-                 player2.playerMoney -= itemPrice;
-
-                Debug.Log(ItemTag);
-            }
+            else
+            {
+                if(ItemTag == "HandGunPickUp")
+                {
+                    player2.playerMoney -= itemPrice;
+                    inventory.Weapon1.SetActive(true);
+                    inventory.isWeapon1Picked = true;
+                    Debug.Log(ItemTag);
+                }
+                else if(ItemTag == "ShortGunPickUp"){
+                    player2.playerMoney -= itemPrice;
+                    inventory.Weapon2.SetActive(true);
+                    inventory.isWeapon2Picked = true;
+                    Debug.Log(ItemTag);
+                }
+                else if(ItemTag == "UziPickUp"){
+                    player2.playerMoney -= itemPrice;
+                    inventory.Weapon3.SetActive(true);
+                    inventory.isWeapon3Picked = true;
+                    Debug.Log(ItemTag);
+                }
                 else if(ItemTag == "BazookaPickUp"){
-                 player2.playerMoney -= itemPrice;
-
-                Debug.Log(ItemTag);
+                    player2.playerMoney -= itemPrice;
+                    inventory.Weapon4.SetActive(true);
+                    inventory.isWeapon4Picked = true;
+                    Debug.Log(ItemTag);
+                }     
             }
-            ItemToPick.SetActive(false);
-            
-            
-        }
+                ItemToPick.SetActive(false);
+            }
+        } 
     }
-}
 }

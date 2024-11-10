@@ -12,6 +12,12 @@ public class PlayerScript2 : MonoBehaviour
     public CharacterController cC;
     public float gravity = -9.81f;
     public Animator animator;
+    
+    [Header("Player Health Things")]
+    private float playerHealth = 120f;
+    public float presentHealth;
+    public GameObject playerDamage;
+    public HealthBar healthBar;
 
     [Header("Player Script Cameras")]
     public Transform playerCamera;
@@ -25,9 +31,24 @@ public class PlayerScript2 : MonoBehaviour
     bool onSurface;
     public float surfaceDistance = 0.4f;
     public LayerMask surfaceMask;
+    bool Player2Active = true;
 
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        presentHealth = playerHealth;
+        healthBar.GiveFullHealth(playerHealth);
+    }
+    private void Awake()
+    {
+        Cursor.lockState =CursorLockMode.Locked;
+    }
     private void Update()
     {
+        if(Player2Active == true)
+        {
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("PlayerControler2");
+        }
         onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask);
         if (onSurface && velocity.y < 0)
         {
@@ -40,6 +61,7 @@ public class PlayerScript2 : MonoBehaviour
         Jump();
         Sprint();
     }
+
 
     void playerMove()
     {
@@ -112,5 +134,30 @@ public class PlayerScript2 : MonoBehaviour
                 jumpRange = 1f;
             }
         }
+    }
+    public void playerHitDamage(float takeDamage)
+    {
+        presentHealth -= takeDamage;
+        StartCoroutine(PlayerDamage());
+
+        healthBar.SetHealth(presentHealth);
+
+        if (presentHealth <= 0)
+        {
+            playerDie();
+        }
+    }
+
+    private void playerDie()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Object.Destroy(gameObject, 1.0f);
+    }
+
+    IEnumerator PlayerDamage()
+    {
+        playerDamage.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        playerDamage.SetActive(false);
     }
 }

@@ -11,7 +11,7 @@ public class ZombieSpam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player2")
         {
             InvokeRepeating("EnemySpawner", 1f, repeatCycle);
             Destroy(gameObject, 10f);
