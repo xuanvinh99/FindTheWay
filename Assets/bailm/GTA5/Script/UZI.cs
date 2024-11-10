@@ -81,12 +81,18 @@ public class UZI : MonoBehaviour
 
         if (setReloading)
             return;
+                if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         if (presentAmmunition <= 0)
         {
             StartCoroutine(Reload());
             return;
         }
+
 
         if(isMoving == false)
         {
@@ -227,8 +233,8 @@ public class UZI : MonoBehaviour
     }
     IEnumerator Reload()
     {
-        playerSpeed = 0f;
-        playerSprint = 0f;
+           playerSpeed = 0.5f;
+        playerSprint =  0.5f;
         setReloading = true;
         Debug.Log("Reloading...");
         animator.SetBool("Reload", true);
