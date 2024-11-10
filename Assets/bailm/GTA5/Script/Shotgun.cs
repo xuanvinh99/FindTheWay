@@ -80,6 +80,11 @@ public class Shotgun : MonoBehaviour
 
         if (setReloading)
             return;
+                if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         if (presentAmmunition <= 0)
         {
@@ -222,8 +227,8 @@ public class Shotgun : MonoBehaviour
     }
     IEnumerator Reload()
     {
-        playerSpeed = 0f;
-        playerSprint = 0f;
+         playerSpeed = 0.5f;
+        playerSprint =  0.5f;
         setReloading = true;
         Debug.Log("Reloading...");
         animator.SetBool("Reload", true);

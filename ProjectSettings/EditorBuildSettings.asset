@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/bailm/Scene/Plot.unity
     guid: b4bd08037cb90cf46998775d555cb385
+  - enabled: 1
+    path: Assets/bailm/Flooded_Grounds/Scenes/Scene_B.unity
+    guid: 4ac20a3a3c7e7c3479bdf78f6708b2b4
   m_configObjects: {}
