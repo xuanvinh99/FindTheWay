@@ -80,7 +80,7 @@ public class Shotgun : MonoBehaviour
 
         if (setReloading)
             return;
-                if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
+        if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
         {
             StartCoroutine(Reload());
             return;
