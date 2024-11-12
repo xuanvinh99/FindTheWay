@@ -24,6 +24,7 @@ public class Zombie2 : MonoBehaviour
     [Header("Zombie Attacking Var")]
     public float timeBtwAttack;
     bool previouslyAttack;
+    public Player2 player2;
 
     [Header("Zombie Animation")]
     public Animator anim;
@@ -112,6 +113,7 @@ public class Zombie2 : MonoBehaviour
 
     private void zombieDie()
     {
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
         zombieAgent.SetDestination(transform.position);
         zombieSpeed = 0f;
         attackingRadius = 0f;
@@ -119,5 +121,6 @@ public class Zombie2 : MonoBehaviour
         playerInattackingRadius = false;
         playerInvisionRadius = false;
         ObjectToHit.Destroy(gameObject, 5.0f);
+        player2.playerMoney += 10;
     }
 }

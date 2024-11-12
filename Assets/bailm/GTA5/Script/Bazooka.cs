@@ -80,6 +80,11 @@ public class Bazooka : MonoBehaviour
 
         if (setReloading)
             return;
+        if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
+        {
+            StartCoroutine(Reload());
+            return;
+        }
 
         if (presentAmmunition <= 0)
         {
