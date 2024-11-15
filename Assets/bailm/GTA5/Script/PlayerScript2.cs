@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerScript2 : MonoBehaviour
@@ -19,6 +20,7 @@ public class PlayerScript2 : MonoBehaviour
     public GameObject playerDamage;
     public HealthBar healthBar;
 
+
     [Header("Player Script Cameras")]
     public Transform playerCamera;
 
@@ -32,6 +34,9 @@ public class PlayerScript2 : MonoBehaviour
     public float surfaceDistance = 0.4f;
     public LayerMask surfaceMask;
     bool Player2Active = true;
+       // Khai báo biến rotationSpeed
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 5f; // Tốc độ quay
 
     private void Start()
     {
@@ -60,13 +65,39 @@ public class PlayerScript2 : MonoBehaviour
         playerMove();
         Jump();
         Sprint();
+           RotateTowardsMouse(); // Gọi hàm quay theo chuột
     }
+    void RotateTowardsMouse()
+{    if (playerCamera == null)
+    {
+        Debug.LogError("playerCamera is null");
+        return;
+    }
+
+    Ray ray = playerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+    Plane plane = new Plane(Vector3.up, transform.position);
+    
+    if (plane.Raycast(ray, out float hit))
+    {
+        Vector3 mousePosition = ray.GetPoint(hit);
+        Vector3 direction = mousePosition - transform.position;
+        direction.y = 0; // Đảm bảo không thay đổi chiều y
+
+        // Kiểm tra nếu hướng không bằng không
+        if (direction.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        Debug.Log("Direction: " + direction);
+    }
+}
 
 
     void playerMove()
     {
         float horizontal_axis = Input.GetAxisRaw("Horizontal");
-        float vertical_axis = Input.GetAxisRaw("Vertical");
+float vertical_axis = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
 
@@ -88,6 +119,9 @@ public class PlayerScript2 : MonoBehaviour
             animator.SetBool("Running", false);
             jumpRange = 1f;
         }
+        Jump() ;
+        Sprint();
+
     }
 
     void Jump()
@@ -151,7 +185,7 @@ public class PlayerScript2 : MonoBehaviour
     private void playerDie()
     {
         Cursor.lockState = CursorLockMode.None;
-        Object.Destroy(gameObject, 1.0f);
+Object.Destroy(gameObject, 1.0f);
     }
 
     IEnumerator PlayerDamage()

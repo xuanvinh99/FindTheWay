@@ -33,5 +33,22 @@ public class SwitchCamera2 : MonoBehaviour
             ThirdPersonCam.SetActive(true);
             AimCam.SetActive(false);
         }
+
+         if(Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            animator.SetBool("AimWalk", true);
+            animator.SetBool("ShootAim", false);
+            ThirdPersonCam.SetActive(false);
+            AimCam.SetActive(true);
+        }
+         else
+        {
+            animator.SetBool("AimWalk", false);
+            animator.SetBool("ShootAim", false);
+            
+            ThirdPersonCam.SetActive(true);
+            AimCam.SetActive(false);
+        }
+
     }
 }
