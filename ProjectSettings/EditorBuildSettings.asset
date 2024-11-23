@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/bailm/Flooded_Grounds/Scenes/Scene_A.unity
     guid: c0d944ca9defd20449bc336e50d75a08
   - enabled: 1
+    path: Assets/bailm/Scene/Menuu.unity
+    guid: fb8146e48d4ea364cb071da77b14ff3e
+  - enabled: 0
     path: Assets/bailm/Scene/Menu.unity
     guid: d234a64f58cf17c4fb64563fac1b4e8f
   - enabled: 1

@@ -7,6 +7,7 @@ public class CanhCua : MonoBehaviour
     public float thoiGianHien = 30f; // Thời gian capsule xuất hiện
     public float thoiGianAn = 30f;   // Thời gian capsule biến mất
     public string tenSceneDich;      // Tên scene cần chuyển
+    public GameObject duongDan;      // Đường chỉ dẫn
 
     private Renderer rend;
     private Collider col;
@@ -19,6 +20,11 @@ public class CanhCua : MonoBehaviour
         rend.enabled = false; // Bắt đầu với trạng thái ẩn
         col.enabled = false;
 
+        if (duongDan != null)
+        {
+            duongDan.SetActive(false); // Đường chỉ dẫn bắt đầu với trạng thái ẩn
+        }
+
         StartCoroutine(DoiTrangThaiHienAn());
     }
 
@@ -30,10 +36,22 @@ public class CanhCua : MonoBehaviour
         {
             rend.enabled = true;   // Hiện capsule
             col.enabled = true;
+
+            if (duongDan != null)
+            {
+                duongDan.SetActive(true); // Hiện đường chỉ dẫn
+            }
+
             yield return new WaitForSeconds(thoiGianHien);
 
             rend.enabled = false;  // Ẩn capsule
             col.enabled = false;
+
+            if (duongDan != null)
+            {
+                duongDan.SetActive(false); // Ẩn đường chỉ dẫn
+            }
+
             yield return new WaitForSeconds(thoiGianAn);
         }
     }
