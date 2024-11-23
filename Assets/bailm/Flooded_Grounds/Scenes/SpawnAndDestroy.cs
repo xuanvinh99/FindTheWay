@@ -16,14 +16,13 @@ public class SpawnAndDestroy : MonoBehaviour
     private IEnumerator ShowEndPoint()
     {
         // Chờ 1 phút (60 giây)
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(0f);
         
         // Hiện EndPoint
         endPoint.SetActive(true);
         
         // Chờ 30 giây trước khi xóa
-        yield return new WaitForSeconds(10f);
-        
+        yield return new WaitForSeconds(100);
         // Ẩn EndPoint
         endPoint.SetActive(false);
     }
