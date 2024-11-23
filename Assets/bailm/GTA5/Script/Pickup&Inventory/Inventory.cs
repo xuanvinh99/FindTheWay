@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour
     public GameObject UZI;
     public GameObject UZI2;
     public GameObject Bazooka;
+        bool Player2Active = true;
 
     [Header("Scripts")]
     public PlayerScript2 playerScript2;
@@ -43,9 +44,10 @@ public class Inventory : MonoBehaviour
     public SwitchCamera2 switchCamera2;
     public GameObject AimCam;
     public GameObject ThirdPersonCamera;
+
     private void Update()
     {
-        if(Input.GetKeyDown("1") && isWeapon1Picked == true)
+        if (Input.GetKeyDown("1") && isWeapon1Picked == true)
         {
             isWeapon1Active = true;
             isWeapon2Active = false;
@@ -53,7 +55,7 @@ public class Inventory : MonoBehaviour
             isWeapon4Active = false;
             isRifleACtive();
         }
-        else if(Input.GetKeyDown("2") && isWeapon2Picked == true)
+        else if (Input.GetKeyDown("2") && isWeapon2Picked == true)
         {
             isWeapon1Active = false;
             isWeapon2Active = true;
@@ -61,7 +63,7 @@ public class Inventory : MonoBehaviour
             isWeapon4Active = false;
             isRifleACtive();
         }
-        else if(Input.GetKeyDown("3") && isWeapon3Picked == true)
+        else if (Input.GetKeyDown("3") && isWeapon3Picked == true)
         {
             isWeapon1Active = false;
             isWeapon2Active = false;
@@ -69,7 +71,7 @@ public class Inventory : MonoBehaviour
             isWeapon4Active = false;
             isRifleACtive();
         }
-        else if(Input.GetKeyDown("4") && isWeapon4Picked == true)
+        else if (Input.GetKeyDown("4") && isWeapon4Picked == true)
         {
             isWeapon1Active = false;
             isWeapon2Active = false;
@@ -77,9 +79,28 @@ public class Inventory : MonoBehaviour
             isWeapon4Active = true;
             isRifleACtive();
         }
-        else if(Input.GetKeyDown("tab"))
+         else if (Input.GetKeyDown("q") ){
+             isWeapon1Active = false;
+            isWeapon2Active = false;
+            isWeapon3Active = false;
+            isWeapon4Active = false;
+
+            // Kích hoạt lại điều khiển của nhân vật
+            playerScript2.GetComponent<PlayerScript2>().enabled = true; 
+
+            // Tắt tất cả các vũ khí
+            HandGun1.SetActive(false);
+            HandGun2.SetActive(false);
+            Shotgun.SetActive(false);
+            UZI.SetActive(false);
+            UZI2.SetActive(false);
+            Bazooka.SetActive(false);
+            
+        
+         }
+        else if (Input.GetKeyDown("tab"))
         {
-            if(isPause)
+            if (isPause)
             {
                 hideInvetory();
             }
@@ -88,11 +109,12 @@ public class Inventory : MonoBehaviour
                 showInventory();
             }
         }
+
     }
 
     void isRifleACtive()
     {
-        if(isWeapon1Active == true)
+        if (isWeapon1Active == true)
         {
             HandGun1.SetActive(true);
             HandGun2.SetActive(true);
@@ -109,7 +131,7 @@ public class Inventory : MonoBehaviour
             uzi2Script2.GetComponent<UZI2>().enabled = false;
             bazooka.GetComponent<Bazooka>().enabled = false;
         }
-        else if(isWeapon2Active == true)
+        else if (isWeapon2Active == true)
         {
             HandGun1.SetActive(false);
             HandGun2.SetActive(false);
@@ -126,7 +148,7 @@ public class Inventory : MonoBehaviour
             uzi2Script2.GetComponent<UZI2>().enabled = false;
             bazooka.GetComponent<Bazooka>().enabled = false;
         }
-        else if(isWeapon3Active == true)
+        else if (isWeapon3Active == true)
         {
             HandGun1.SetActive(true);
             HandGun2.SetActive(true);
@@ -143,7 +165,7 @@ public class Inventory : MonoBehaviour
             uzi2Script2.GetComponent<UZI2>().enabled = true;
             bazooka.GetComponent<Bazooka>().enabled = false;
         }
-        else if(isWeapon4Active == true)
+        else if (isWeapon4Active == true)
         {
             HandGun1.SetActive(false);
             HandGun2.SetActive(false);
@@ -161,25 +183,26 @@ public class Inventory : MonoBehaviour
             bazooka.GetComponent<Bazooka>().enabled = true;
         }
     }
+
     void showInventory()
     {
         switchCamera2.GetComponent<SwitchCamera2>().enabled = false;
         ThirdPersonCamera.SetActive(false);
         AimCam.SetActive(false);
-        
+
         inventoryPanel.SetActive(true);
         Time.timeScale = 0f;
         isPause = true;
     }
+
     void hideInvetory()
     {
         switchCamera2.GetComponent<SwitchCamera2>().enabled = true;
         ThirdPersonCamera.SetActive(true);
         AimCam.SetActive(true);
-        
+
         inventoryPanel.SetActive(false);
         Time.timeScale = 1f;
         isPause = false;
     }
-
 }
