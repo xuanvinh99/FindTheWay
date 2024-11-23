@@ -162,40 +162,43 @@ public class HandGun : MonoBehaviour
 
     void playerMove()
     {
-        float horizontal_axis = Input.GetAxisRaw("Horizontal");
-        float vertical_axis = Input.GetAxisRaw("Vertical");
+         float horizontal_axis = Input.GetAxisRaw("Horizontal");
+    float vertical_axis = Input.GetAxisRaw("Vertical");
 
-        Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
+    Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
 
-        animator.SetBool("Reload", false);
+    // Cập nhật animator
+    animator.SetBool("Reload", false);
 
-        if (direction.magnitude >= 0.1f)
-        {
-            animator.SetBool("WalkForward", true);
-            animator.SetBool("RunForward", false);
+    if (direction.magnitude >= 0.1f)
+    {
+        isMoving = true;
 
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
-            PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+        // Cập nhật animation
+        animator.SetBool("WalkForward", true);
+        animator.SetBool("RunForward", false); // Reset nếu không chạy
 
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
+        PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            // Cập nhật vận tốc
-            Vector3 targetVelocity = moveDirection.normalized * playerSpeed;
-            velocity = Vector3.Lerp(velocity, targetVelocity, Time.deltaTime * 10f); // Điều chỉnh độ mượt
-        }
-        else
-        {
-            // Nếu không có di chuyển, đặt vận tốc về 0
-            velocity = Vector3.zero;
-            animator.SetBool("WalkForward", false);
-            animator.SetBool("RunForward", false);
-            jumpRange = 1f; // Có thể nhảy khi đứng yên/-strong/-heart:>:o:-((:-h isMoving = false;
-            handgun2.isMoving = false;
-        }
+        Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
-        // Di chuyển CharacterController
-        cC.Move(velocity * Time.deltaTime);
+        // Cập nhật vận tốc
+        Vector3 targetVelocity = moveDirection.normalized * playerSpeed;
+        velocity = Vector3.Lerp(velocity, targetVelocity, Time.deltaTime * 10f);
+    }
+    else
+    {
+        // Nếu không có di chuyển, đặt vận tốc về 0
+        velocity = Vector3.zero;
+        isMoving = false;
+        animator.SetBool("WalkForward", false);
+        animator.SetBool("RunForward", false);
+    }
+
+    // Di chuyển CharacterController
+    cC.Move(velocity * Time.deltaTime);
     }
 
     void Jump()
@@ -215,38 +218,43 @@ public class HandGun : MonoBehaviour
 
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && onSurface)
+      // Kiểm tra nếu có nhấn phím Sprint và đang di chuyển
+    if (Input.GetButton("Sprint") && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && onSurface)
+    {
+        float horizontal_axis = Input.GetAxisRaw("Horizontal");
+        float vertical_axis = Input.GetAxisRaw("Vertical");
+
+        Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
+
+        // Kiểm tra nếu có hướng di chuyển
+        if (direction.magnitude >= 0.1f)
         {
-            float horizontal_axis = Input.GetAxisRaw("Horizontal");
-            float vertical_axis = Input.GetAxisRaw("Vertical");
+            animator.SetBool("WalkForward", false);
+            animator.SetBool("RunForward", true);
+            isMoving = true;
 
-            Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
+            PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            if (direction.magnitude >= 0.1f)
-            {
-                animator.SetBool("WalkForward", false);
-                animator.SetBool("RunForward", true);
-                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
-                float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
-                PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-                Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                cC.Move(moveDirection.normalized * playerSprint * Time.deltaTime);
-                jumpRange = 0f;
-                isMoving = true;
-                handgun2.isMoving = true;
-                setReloading = false;
-                animator.SetBool("Reload", false);
-            }
-            else
-            {
-                animator.SetBool("WalkForward", true);
-                animator.SetBool("RunForward", false);
-                jumpRange = 1f;
-                isMoving = false;
-                handgun2.isMoving = false;
-            }
+            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            cC.Move(moveDirection.normalized * playerSprint * Time.deltaTime);
         }
+    }
+    else
+    {
+        // Nếu không đang chạy, reset các animator
+        animator.SetBool("RunForward", false);
+        if (isMoving)
+        {
+            animator.SetBool("WalkForward", true);
+        }
+        else
+        {
+            animator.SetBool("WalkForward", false);
+        }
+        isMoving = false;
+    }
     }
 
     void Shoot()
