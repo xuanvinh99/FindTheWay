@@ -9185,6 +9185,7 @@ MonoBehaviour:
   ItemTag: HandGunPickUp
   player2: {fileID: 7912700094259346179}
   inventory: {fileID: 171861851}
+  pickupMessage: {fileID: 0}
 --- !u!1 &1294135089
 GameObject:
   m_ObjectHideFlags: 0
@@ -9405,6 +9406,7 @@ MonoBehaviour:
   ItemTag: ShortGunPickUp
   player2: {fileID: 7912700094259346179}
   inventory: {fileID: 171861851}
+  pickupMessage: {fileID: 0}
 --- !u!1 &1311791571
 GameObject:
   m_ObjectHideFlags: 0
@@ -13178,7 +13180,7 @@ Transform:
   m_GameObject: {fileID: 1874173759}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 539.8077, y: 12.563892, z: 386.77896}
+  m_LocalPosition: {x: 539.8077, y: 12.563892, z: 386.81445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13896,6 +13898,7 @@ MonoBehaviour:
   ItemTag: UziPickUp
   player2: {fileID: 7912700094259346179}
   inventory: {fileID: 171861851}
+  pickupMessage: {fileID: 0}
 --- !u!1 &1940555975
 GameObject:
   m_ObjectHideFlags: 0
@@ -15085,6 +15088,7 @@ MonoBehaviour:
   ItemTag: BazookaPickUp
   player2: {fileID: 7912700094259346179}
   inventory: {fileID: 171861851}
+  pickupMessage: {fileID: 0}
 --- !u!1 &2131393755
 GameObject:
   m_ObjectHideFlags: 0
@@ -36015,7 +36019,7 @@ Transform:
   m_GameObject: {fileID: 3745814524196873447}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 539.8077, y: 12.563892, z: 386.77896}
+  m_LocalPosition: {x: 539.8077, y: 12.563892, z: 386.81445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -60664,7 +60668,7 @@ Transform:
   m_GameObject: {fileID: 8996097587747664962}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 539.239, y: 12.142289, z: 386.00882}
+  m_LocalPosition: {x: 539.239, y: 12.142289, z: 386.02277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
