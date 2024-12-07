@@ -5,6 +5,13 @@ using UnityEngine;
 public class Shotgun : MonoBehaviour
 {
     //Rifle movement
+    
+    public int maxReloads = 3; // Giới hạn số lần nạp đạn
+    private int remainingReloads; 
+        [Header("Player Settings")]
+    public float turnCalmTime = 0.1f;
+    public Transform playerBody;
+    private Coroutine reloadCoroutine;
     [Header("Player Movement")]
     public float playerSpeed = 1.1f;
     public float playerSprint = 2f;
@@ -18,7 +25,7 @@ public class Shotgun : MonoBehaviour
     public Transform playerCamera;
 
     [Header("Player jumping and velocity")]
-    public float turnCalmTime = 0.1f;
+
     float turnCalmVelocity;
     public float jumpRange = 1f;
     Vector3 velocity;
@@ -58,10 +65,37 @@ public class Shotgun : MonoBehaviour
         transform.SetParent(hand);
         Cursor.lockState = CursorLockMode.Locked;
         presentAmmunition = maximumAmmunition;
+              remainingReloads = maxReloads; 
+    }
+        void RotateTowardsMouse()
+    {
+        if (playerCamera == null || playerBody == null)
+        {
+            Debug.LogError("playerCamera or playerBody is null");
+            return;
+        }
+
+        Ray ray = playerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.up, playerBody.position); // Sử dụng vị trí của playerBody
+
+        if (plane.Raycast(ray, out float hit))
+        {
+            Vector3 mousePosition = ray.GetPoint(hit);
+            Vector3 direction = mousePosition - playerBody.position; // Tính toán hướng từ playerBody
+
+            direction.y = 0; // Đảm bảo không thay đổi chiều y
+
+            if (direction.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                playerBody.rotation = Quaternion.Slerp(playerBody.rotation, targetRotation, turnCalmTime);
+            }
+        }
     }
 
     private void Update()
     {
+         RotateTowardsMouse(); 
         if(ShotgunActive == true)
         {
             animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ShotgunAnimator");
@@ -162,6 +196,7 @@ public class Shotgun : MonoBehaviour
             {
                 animator.SetBool("WalkForward", false);
                 animator.SetBool("RunForward", true);
+             isMoving = true;
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
                 PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -173,10 +208,16 @@ public class Shotgun : MonoBehaviour
             }
             else
             {
-                animator.SetBool("WalkForward", true);
-                animator.SetBool("RunForward", false);
-                jumpRange = 1f;
-                isMoving = false;
+               animator.SetBool("RunForward", false);
+        if (isMoving)
+        {
+            animator.SetBool("WalkForward", true);
+        }
+        else
+        {
+            animator.SetBool("WalkForward", false);
+        }
+        isMoving = false;
             }
         }
     }
@@ -194,10 +235,15 @@ public class Shotgun : MonoBehaviour
         }
 
         muzzleSpark.Play();
+         setReloading = false;
+        animator.SetBool("Reload", false);
 
         RaycastHit hitInfo;
+         Vector3 shootDirection = playerCamera.transform.forward; // Lấy hướng bắn từ camera
+        RotateTowardsMouse();
+        
 
-        if(Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
+         if (Physics.Raycast(playerCamera.transform.position, shootDirection, out hitInfo, shootingRange))
         {
             Debug.Log(hitInfo.transform.name);
 
@@ -205,7 +251,7 @@ public class Shotgun : MonoBehaviour
             Zombie1 zombie1 = hitInfo.transform.GetComponent<Zombie1>();
             Zombie2 zombie2 = hitInfo.transform.GetComponent<Zombie2>();
 
-            if(obj != null)
+            if (obj != null)
             {
                 obj.objectHitDamage(giveDamage);
                 GameObject metalEffectGo = Instantiate(metalEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
@@ -222,23 +268,34 @@ public class Shotgun : MonoBehaviour
                 zombie2.zombieHitDamage(giveDamage);
                 GameObject goreEffectGo = Instantiate(metalEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 Destroy(goreEffectGo, 1f);
-            } 
+            }
         }
     }
     IEnumerator Reload()
     {
-         playerSpeed = 0.5f;
-        playerSprint =  0.5f;
+       if (remainingReloads <= 0)
+        {
+            Debug.Log("Không thể nạp đạn nữa!");
+            yield break; // Dừng coroutine nếu không còn nạp đạn
+        }
+
+        playerSpeed = 0f;
+        playerSprint = 0f;
         setReloading = true;
-        Debug.Log("Reloading...");
         animator.SetBool("Reload", true);
-        //play reload sound
+        Debug.Log("Reloading...");
+
         yield return new WaitForSeconds(reloadingTime);
-        Debug.Log("Done Reloading...");
-        animator.SetBool("Reload", false);
-        presentAmmunition = maximumAmmunition;
-        playerSpeed = 1.1f;
-        playerSprint = 5f;
-        setReloading = false;
+
+        if (setReloading)
+        {
+            Debug.Log("Done Reloading...");
+            animator.SetBool("Reload", false);
+            presentAmmunition = maximumAmmunition; // Đặt lại đạn
+            remainingReloads--; // Giảm số lần nạp đạn còn lại
+            playerSpeed = 1.1f;
+            playerSprint = 5f;
+            setReloading = false;
+        }
     }
 }

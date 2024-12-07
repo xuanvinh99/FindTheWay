@@ -13,20 +13,16 @@ public class PickupItem : MonoBehaviour
     [Header("Player Info")]
     public Player2 player2;
     public Inventory inventory;
-      [Header("UI Info")]
-    public Canvas pickupMessage; 
 
     private void Start()
     {
         ItemToPick = GameObject.FindWithTag(ItemTag);
-           pickupMessage.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         if (Vector3.Distance(transform.position, player2.transform.position) < itemRadius)
         {
-               pickupMessage.gameObject.SetActive(true);
             if (Input.GetKeyDown("f"))
             {
                 if (itemPrice > player2.playerMoney)
@@ -66,10 +62,7 @@ public class PickupItem : MonoBehaviour
                     }
                 }
                 ItemToPick.SetActive(false);
-                  
             }
         }
-        else{ pickupMessage.gameObject.SetActive(false);}
-        
     }
 }
