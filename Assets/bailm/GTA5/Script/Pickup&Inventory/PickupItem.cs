@@ -13,16 +13,20 @@ public class PickupItem : MonoBehaviour
     [Header("Player Info")]
     public Player2 player2;
     public Inventory inventory;
+    public GameObject pickupUI;
+
 
     private void Start()
     {
         ItemToPick = GameObject.FindWithTag(ItemTag);
+          pickupUI.SetActive(false);
     }
 
     private void Update()
     {
         if (Vector3.Distance(transform.position, player2.transform.position) < itemRadius)
         {
+                pickupUI.SetActive(true);
             if (Input.GetKeyDown("f"))
             {
                 if (itemPrice > player2.playerMoney)
@@ -62,7 +66,13 @@ public class PickupItem : MonoBehaviour
                     }
                 }
                 ItemToPick.SetActive(false);
+                    pickupUI.SetActive(false);
             }
         }
+         else
+    {
+        pickupUI.SetActive(false); // Ẩn UI khi ra xa
+    }
+        
     }
 }
