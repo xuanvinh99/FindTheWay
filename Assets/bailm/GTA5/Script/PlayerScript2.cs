@@ -15,7 +15,7 @@ public class PlayerScript2 : MonoBehaviour
     public Animator animator;
     
     [Header("Player Health Things")]
-    private float playerHealth = 120f;
+    private float playerHealth = 200f;
     public float presentHealth;
     public GameObject playerDamage;
     public HealthBar healthBar;
@@ -124,7 +124,7 @@ float vertical_axis = Input.GetAxisRaw("Vertical");
 
     }
 
-    void Jump()
+  void Jump()
 {
     if (Input.GetButtonDown("Jump") && onSurface)
     {
@@ -139,6 +139,7 @@ float vertical_axis = Input.GetAxisRaw("Vertical");
         animator.ResetTrigger("Jump");
     }
 
+    Debug.Log("onSurface: " + onSurface);
     Debug.Log("Velocity Y: " + velocity.y);
 }
 

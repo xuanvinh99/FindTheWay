@@ -44,7 +44,7 @@ public class Inventory : MonoBehaviour
     public SwitchCamera2 switchCamera2;
     public GameObject AimCam;
     public GameObject ThirdPersonCamera;
-    public GameObject Menu;
+
 
     private void Update()
     {
