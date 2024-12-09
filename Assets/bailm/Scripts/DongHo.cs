@@ -3,16 +3,39 @@ using UnityEngine.UI;
 
 public class DongHo : MonoBehaviour
 {
-    public Text timerText; 
-    private float elapsedTime = 0f; 
+    public Text timerText;
+    private float countdownTime = 120f; 
+    private float remainingTime; 
+
+    private void Start()
+    {
+        remainingTime = countdownTime;
+    }
 
     private void Update()
     {
-        elapsedTime += Time.deltaTime;
+        if (remainingTime > 0)
+        {
+            remainingTime -= Time.deltaTime; 
 
-        int minutes = Mathf.FloorToInt(elapsedTime / 60f);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60f);
+            if (remainingTime <= 0)
+            {
+                remainingTime = 0; 
+            }
 
-        timerText.text = $"{minutes:00}:{seconds:00}";
+            int minutes = Mathf.FloorToInt(remainingTime / 60f);
+            int seconds = Mathf.FloorToInt(remainingTime % 60f);
+
+            timerText.text = $"{minutes:00}:{seconds:00}";
+        }
+        else
+        {
+            ResetCountdown(); 
+        }
+    }
+
+    private void ResetCountdown()
+    {
+        remainingTime = countdownTime; 
     }
 }
