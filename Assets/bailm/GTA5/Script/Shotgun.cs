@@ -146,7 +146,7 @@ public class Shotgun : MonoBehaviour
         float vertical_axis = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
-
+    animator.SetBool("Reload", false);
         if (direction.magnitude >= 0.1f)
         {
             animator.SetBool("WalkForward", true);
