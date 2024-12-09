@@ -4,8 +4,8 @@ using System.Collections;
 
 public class CanhCua : MonoBehaviour
 {
-    public float thoiGianHien = 30f; // Thời gian capsule xuất hiện
-    public float thoiGianAn = 30f;   // Thời gian capsule biến mất
+    public float thoiGianHien = 120f; // Thời gian capsule xuất hiện
+    public float thoiGianAn = 120f;   // Thời gian capsule biến mất
     public string tenSceneDich;      // Tên scene cần chuyển
     public GameObject duongDan;  
      public GameObject fire;    // Đường chỉ dẫn

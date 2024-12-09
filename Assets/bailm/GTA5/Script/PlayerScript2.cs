@@ -125,19 +125,22 @@ float vertical_axis = Input.GetAxisRaw("Vertical");
     }
 
     void Jump()
+{
+    if (Input.GetButtonDown("Jump") && onSurface)
     {
-        if (Input.GetButtonDown("Jump") && onSurface)
-        {
-            animator.SetBool("Idle", false);
-            animator.SetTrigger("Jump");
-            velocity.y = Mathf.Sqrt(jumpRange * -2 * gravity);
-        }
-        else
-        {
-            animator.SetBool("Idle", true);
-            animator.ResetTrigger("Jump");
-        }
+        Debug.Log("Nhảy được khởi động");
+        animator.SetBool("Idle", false);
+        animator.SetTrigger("Jump");
+        velocity.y = Mathf.Sqrt(jumpRange * -2 * gravity);
     }
+    else
+    {
+        animator.SetBool("Idle", true);
+        animator.ResetTrigger("Jump");
+    }
+
+    Debug.Log("Velocity Y: " + velocity.y);
+}
 
     void Sprint()
     {
