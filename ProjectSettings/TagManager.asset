@@ -15,6 +15,7 @@ TagManager:
   - uziUI
   - BazookaUI
   - fbuyhg
+  - Surface
   layers:
   - Default
   - TransparentFX
