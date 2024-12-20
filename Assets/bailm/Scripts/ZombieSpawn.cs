@@ -14,7 +14,7 @@ public class ZombieSpam : MonoBehaviour
         if(other.gameObject.tag == "Player2")
         {
             InvokeRepeating("EnemySpawner", 1f, repeatCycle);
-            Destroy(gameObject, 10f);
+            Destroy(gameObject, 7f);
             gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }

@@ -6,7 +6,7 @@ public class PickupItem : MonoBehaviour
 {
     [Header("Item Info")]
     public int itemPrice;
-    public int itemRadius;
+    public float itemRadius =0.5f; 
     public string ItemTag;
     private GameObject ItemToPick;
 
@@ -22,57 +22,55 @@ public class PickupItem : MonoBehaviour
           pickupUI.SetActive(false);
     }
 
-    private void Update()
+   private void Update()
     {
+        // Kiểm tra khoảng cách giữa người chơi và vật phẩm
         if (Vector3.Distance(transform.position, player2.transform.position) < itemRadius)
         {
-                pickupUI.SetActive(true);
-            if (Input.GetKeyDown("f"))
+            pickupUI.SetActive(true); // Hiện giao diện người dùng
+            if (Input.GetKeyDown("f")) // Kiểm tra phím "f"
             {
-                if (itemPrice > player2.playerMoney)
-                {
-                    Debug.Log("You are broke");
-                    //show UI
-                }
-                else
-                {
-                    if (ItemTag == "HandGunPickUp")
-                    {
-                        player2.playerMoney -= itemPrice;
-                        inventory.Weapon1.SetActive(true);
-                        inventory.isWeapon1Picked = true;
-                        Debug.Log(ItemTag);
-                    }
-                    else if (ItemTag == "ShortGunPickUp")
-                    {
-                        player2.playerMoney -= itemPrice;
-                        inventory.Weapon2.SetActive(true);
-                        inventory.isWeapon2Picked = true;
-                        Debug.Log(ItemTag);
-                    }
-                    else if (ItemTag == "UziPickUp")
-                    {
-                        player2.playerMoney -= itemPrice;
-                        inventory.Weapon3.SetActive(true);
-                        inventory.isWeapon3Picked = true;
-                        Debug.Log(ItemTag);
-                    }
-                    else if (ItemTag == "BazookaPickUp")
-                    {
-                        player2.playerMoney -= itemPrice;
-                        inventory.Weapon4.SetActive(true);
-                        inventory.isWeapon4Picked = true;
-                        Debug.Log(ItemTag);
-                    }
-                }
-                ItemToPick.SetActive(false);
-                    pickupUI.SetActive(false);
+                HandleItemPurchase(); // Xử lý việc mua vật phẩm
             }
         }
-         else
-    {
-        pickupUI.SetActive(false); // Ẩn UI khi ra xa
+        else
+        {
+            pickupUI.SetActive(false); // Ẩn giao diện khi ra ngoài bán kính
+        }
     }
-        
+
+    private void HandleItemPurchase()
+    {
+        if (itemPrice > player2.playerMoney) // Kiểm tra xem có đủ tiền không
+        {
+            Debug.Log("Bạn không có đủ tiền.");
+            // Hiện giao diện cho thiếu tiền
+            return;
+        }
+
+        player2.playerMoney -= itemPrice; // Trừ tiền khi mua
+
+        // Kích hoạt vật phẩm theo nhãn
+        switch (ItemTag)
+        {
+            case "HandGunPickUp":
+                inventory.Weapon1.SetActive(true);
+                inventory.isWeapon1Picked = true;
+                break;
+            case "ShortGunPickUp":
+                inventory.Weapon2.SetActive(true);
+                inventory.isWeapon2Picked = true;
+                break;
+            case "UziPickUp":
+                inventory.Weapon3.SetActive(true);
+                inventory.isWeapon3Picked = true;
+                break;
+            case "BazookaPickUp":
+                inventory.Weapon4.SetActive(true);
+                inventory.isWeapon4Picked = true;
+                break;
+        }
+
+        Debug.Log(ItemTag + " đã được mua.");
     }
 }
