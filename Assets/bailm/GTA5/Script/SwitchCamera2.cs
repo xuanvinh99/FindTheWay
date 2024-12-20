@@ -4,54 +4,59 @@ using UnityEngine;
 
 public class SwitchCamera2 : MonoBehaviour
 {
+   
     [Header("Camera to Assign")]
-    public GameObject AimCam;
-    public GameObject ThirdPersonCam;
-    public Animator animator;
+    public GameObject AimCam; // Camera nhắm
+    public GameObject ThirdPersonCam; // Camera góc nhìn thứ ba
+    public Animator animator; // Animator để điều khiển hoạt ảnh
 
     private void Update()
-    
     {
-        if(Input.GetButton("Fire2") )
-        {       animator.SetBool("nham", true);
-            animator.SetBool("ShootAim", true);
-            ThirdPersonCam.SetActive(false);
+        bool isAiming = Input.GetButton("Fire2"); // Kiểm tra nhấn nút nhắm
+        bool isMovingForward = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow); // Kiểm tra di chuyển tới
+
+        if (isAiming)
+        {
+            animator.SetBool("nham", true);
             AimCam.SetActive(true);
-            
+            ThirdPersonCam.SetActive(false);
+
+            if (isMovingForward)
+            {
+                animator.SetBool("AimWalk", true); // Đang đi trong khi nhắm
+                animator.SetBool("ShootAim", false); // Không bắn
+            }
+            else
+            {
+                animator.SetBool("AimWalk", false); // Không đi
+                animator.SetBool("ShootAim", true); // Chỉ nhắm
+            }
         }
         else
-        if(Input.GetButton("Fire2") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
-            animator.SetBool("AimWalk", true);
+            animator.SetBool("nham", false);
             animator.SetBool("ShootAim", false);
-            ThirdPersonCam.SetActive(false);
-            AimCam.SetActive(true);
-        }
-        else
-        {
             animator.SetBool("AimWalk", false);
-            animator.SetBool("ShootAim", false);
-            
+
             ThirdPersonCam.SetActive(true);
             AimCam.SetActive(false);
         }
 
-         if(Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        // Kiểm tra bắn khi nhắm và đang di chuyển
+        if (Input.GetButton("Fire1"))
         {
-            animator.SetBool("AimWalk", true);
-            animator.SetBool("ShootAim", false);
-            ThirdPersonCam.SetActive(false);
-            AimCam.SetActive(true);
+            if (isAiming && isMovingForward)
+            {
+                animator.SetBool("AimWalk", true); // Vẫn đi khi bắn
+                animator.SetBool("ShootAim", true); // Bắn
+                ThirdPersonCam.SetActive(false);
+                AimCam.SetActive(true);
+            }
+            else if (isAiming)
+            {
+                animator.SetBool("AimWalk", false); // Không đi khi bắn
+                animator.SetBool("ShootAim", true); // Bắn
+            }
         }
-        
-         else
-        {
-            animator.SetBool("AimWalk", false);
-            animator.SetBool("ShootAim", false);
-            
-            ThirdPersonCam.SetActive(true);
-            AimCam.SetActive(false);
-        }
-
     }
 }

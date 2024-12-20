@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Shotgun : MonoBehaviour
 {
-    //Rifle movement
-    
-    public int maxReloads = 3; // Giới hạn số lần nạp đạn
+    // Rifle movement
+    public int maxReloads = 10; // Giới hạn số lần nạp đạn
     private int remainingReloads; 
-        [Header("Player Settings")]
+    
+    [Header("Player Settings")]
     public float turnCalmTime = 0.1f;
     public Transform playerBody;
     private Coroutine reloadCoroutine;
+
     [Header("Player Movement")]
     public float playerSpeed = 1.1f;
     public float playerSprint = 2f;
@@ -25,7 +26,6 @@ public class Shotgun : MonoBehaviour
     public Transform playerCamera;
 
     [Header("Player jumping and velocity")]
-
     float turnCalmVelocity;
     public float jumpRange = 1f;
     Vector3 velocity;
@@ -35,22 +35,22 @@ public class Shotgun : MonoBehaviour
     public LayerMask surfaceMask;
 
     // Rifle shooting var
-
     [Header("Rifle Things")]
     public Camera cam;
-    public float giveDamage = 15f;
-    public float shootingRange = 100f;
-    public float fireCharge = 1f;
-    private float nextTimeToShoot = 0f;
+    public float giveDamage = 5050f;
+    public float shootingRange = 50f;
+    public float fireCharge = 30f;
+    private float nextTimeToShoot = 1.55f;
     public Transform hand;
     public Transform PlayerTransform;
     public bool isMoving;
 
     [Header("Rifle Ammunition and shooting")]
-    private int maximumAmmunition = 7;
-    public int mag = 10;
+    private int maximumAmmunition = 1000; // Số viên trong một lần nạp
+    public int mag = 100; // Tổng số viên đạn trong kho
     private int presentAmmunition;
-    public float reloadingTime = 1.3f;
+    private int bulletsFired = 0; // Số viên đạn đã bắn
+    public float reloadingTime = 1.11f;
     private bool setReloading = false;
 
     [Header("Rifle Effects")]
@@ -59,15 +59,78 @@ public class Shotgun : MonoBehaviour
 
     [Header("Sounds && UI")]
     bool ShotgunActive = true;
-
+    
     private void Awake()
     {
         transform.SetParent(hand);
         Cursor.lockState = CursorLockMode.Locked;
         presentAmmunition = maximumAmmunition;
-              remainingReloads = maxReloads; 
+        remainingReloads = maxReloads; 
     }
-        void RotateTowardsMouse()
+
+    private void Update()
+    {
+    RotateTowardsMouse(); 
+    if (ShotgunActive)
+    {
+        animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ShotgunAnimator");
+    }
+
+    onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask);
+    if (onSurface && velocity.y < 0)
+    {
+        velocity.y = -2f;
+    }
+
+    velocity.y += gravity * Time.deltaTime;
+    cC.Move(velocity * Time.deltaTime);
+    playerMove();
+    Jump();
+    Sprint();
+
+    // Kiểm tra nếu đang nạp đạn
+    if (setReloading)
+    {
+        return; // Nếu đang nạp đạn, không cho phép bắn
+    }
+
+
+    // Kiểm tra xem có đạn không
+    if (presentAmmunition <= 0 && mag > 0)
+    {
+        StartCoroutine(Reload());
+        return;
+    }
+
+    // Kiểm tra bắn
+    if (!isMoving && Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
+    {
+        if (presentAmmunition > 0) // Kiểm tra có đạn trước khi bắn
+        {
+            animator.SetBool("Shoot", true);
+            nextTimeToShoot = Time.time + 1.5f / fireCharge;
+            Shoot();
+            bulletsFired++;
+
+            // Kiểm tra nếu đã bắn 10 viên
+            if (bulletsFired >= 10)
+            {
+                Debug.Log("Đã bắn 10 viên, cần nạp lại!");
+                StartCoroutine(Reload());
+            }
+        }
+        else
+        {
+            Debug.Log("Hết đạn, không thể bắn!");
+        }
+    }
+    else
+    {
+        animator.SetBool("Shoot", false);
+    }    
+    }
+
+    void RotateTowardsMouse()
     {
         if (playerCamera == null || playerBody == null)
         {
@@ -76,14 +139,13 @@ public class Shotgun : MonoBehaviour
         }
 
         Ray ray = playerCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.up, playerBody.position); // Sử dụng vị trí của playerBody
+        Plane plane = new Plane(Vector3.up, playerBody.position);
 
         if (plane.Raycast(ray, out float hit))
         {
             Vector3 mousePosition = ray.GetPoint(hit);
-            Vector3 direction = mousePosition - playerBody.position; // Tính toán hướng từ playerBody
-
-            direction.y = 0; // Đảm bảo không thay đổi chiều y
+            Vector3 direction = mousePosition - playerBody.position;
+            direction.y = 0;
 
             if (direction.magnitude > 0.1f)
             {
@@ -93,81 +155,40 @@ public class Shotgun : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-         RotateTowardsMouse(); 
-        if(ShotgunActive == true)
-        {
-            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ShotgunAnimator");
-        }
-        onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask);
-        if (onSurface && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
-
-        velocity.y += gravity * Time.deltaTime;
-        cC.Move(velocity * Time.deltaTime);
-        playerMove();
-        Jump();
-        Sprint();
-
-        if (setReloading)
-            return;
-        if (Input.GetKeyDown(KeyCode.R) && presentAmmunition < maximumAmmunition)
-        {
-            StartCoroutine(Reload());
-            return;
-        }
-
-        if (presentAmmunition <= 0)
-        {
-            StartCoroutine(Reload());
-            return;
-        }
-
-        if(isMoving == false)
-        {
-            if(Input.GetButton("Fire1") && Time.time >= nextTimeToShoot)
-            {
-                animator.SetBool("Shoot", true);
-                nextTimeToShoot = Time.time + 1f / fireCharge;
-                Shoot();
-            }
-            else
-            {
-                animator.SetBool("Shoot", false);
-            }
-        }  
-    }
     void playerMove()
     {
         float horizontal_axis = Input.GetAxisRaw("Horizontal");
         float vertical_axis = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
-    animator.SetBool("Reload", false);
+        animator.SetBool("Reload", false);
+        
         if (direction.magnitude >= 0.1f)
         {
+            isMoving = true;
             animator.SetBool("WalkForward", true);
             animator.SetBool("RunForward", false);
+
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
             PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            cC.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
-            jumpRange = 0f;
-            isMoving = true;
+
+            Vector3 targetVelocity = moveDirection.normalized * playerSpeed;
+            velocity = Vector3.Lerp(velocity, targetVelocity, Time.deltaTime * 10f);
         }
         else
         {
+            velocity = Vector3.zero;
+            isMoving = false;
             animator.SetBool("WalkForward", false);
             animator.SetBool("RunForward", false);
-            jumpRange = 1f;
-            isMoving = false;
         }
+        
+        cC.Move(velocity * Time.deltaTime);
     }
+
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && onSurface)
@@ -185,7 +206,7 @@ public class Shotgun : MonoBehaviour
 
     void Sprint()
     {
-        if (Input.GetButton("Sprint") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) && onSurface)
+        if (Input.GetButton("Sprint") && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && onSurface)
         {
             float horizontal_axis = Input.GetAxisRaw("Horizontal");
             float vertical_axis = Input.GetAxisRaw("Vertical");
@@ -196,54 +217,52 @@ public class Shotgun : MonoBehaviour
             {
                 animator.SetBool("WalkForward", false);
                 animator.SetBool("RunForward", true);
-             isMoving = true;
+                isMoving = true;
+
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(PlayerTransform.eulerAngles.y, targetAngle, ref turnCalmVelocity, turnCalmTime);
                 PlayerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
 
                 Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                 cC.Move(moveDirection.normalized * playerSprint * Time.deltaTime);
-                jumpRange = 0f;
-                isMoving = true;
             }
-            else
-            {
-               animator.SetBool("RunForward", false);
-        if (isMoving)
-        {
-            animator.SetBool("WalkForward", true);
         }
         else
         {
-            animator.SetBool("WalkForward", false);
-        }
-        isMoving = false;
+            animator.SetBool("RunForward", false);
+            if (isMoving)
+            {
+                animator.SetBool("WalkForward", true);
             }
-        }
+            else
+            {
+                animator.SetBool("WalkForward", false);
+            }
+            isMoving = false;
+        }       
     }
+
     void Shoot()
     {
         if (mag == 0)
         {
-            //show aumo out text/UI
+            return; // Hiển thị thông báo hết đạn
         }
+
         presentAmmunition--;
 
-        if (presentAmmunition == 0)
+        if (presentAmmunition == 0 && mag > 0)
         {
-            mag--;  
+            StartCoroutine(Reload());
+            return;
         }
 
         muzzleSpark.Play();
-         setReloading = false;
-        animator.SetBool("Reload", false);
 
         RaycastHit hitInfo;
-         Vector3 shootDirection = playerCamera.transform.forward; // Lấy hướng bắn từ camera
-        RotateTowardsMouse();
-        
+        Vector3 shootDirection = playerCamera.transform.forward;
 
-         if (Physics.Raycast(playerCamera.transform.position, shootDirection, out hitInfo, shootingRange))
+        if (Physics.Raycast(playerCamera.transform.position, shootDirection, out hitInfo, shootingRange))
         {
             Debug.Log(hitInfo.transform.name);
 
@@ -271,9 +290,10 @@ public class Shotgun : MonoBehaviour
             }
         }
     }
-    IEnumerator Reload()
-    {
-       if (remainingReloads <= 0)
+
+   IEnumerator Reload()
+{
+      if (remainingReloads <= 0)
         {
             Debug.Log("Không thể nạp đạn nữa!");
             yield break; // Dừng coroutine nếu không còn nạp đạn
@@ -297,5 +317,5 @@ public class Shotgun : MonoBehaviour
             playerSprint = 5f;
             setReloading = false;
         }
-    }
+}
 }
