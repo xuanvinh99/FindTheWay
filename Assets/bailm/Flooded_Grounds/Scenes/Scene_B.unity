@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.6
   m_CustomReflection: {fileID: 8900000, guid: 3b5eaa969aa89fb45b025e2ff7d7695a, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3795603, g: 0.41196305, b: 0.4402244, a: 0.6}
+  m_IndirectSpecularColor: {r: 0.37956408, g: 0.41196477, b: 0.44022116, a: 0.6}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -11997,7 +11997,7 @@ Transform:
   m_GameObject: {fileID: 1874173759}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 544.27765, y: 12.474896, z: 402.9998}
+  m_LocalPosition: {x: 544.27765, y: 12.474896, z: 402.93945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24115,7 +24115,7 @@ MonoBehaviour:
   cC: {fileID: 1856931926343551121}
   gravity: -9.81
   animator: {fileID: 3336201162523329924}
-  playerCamera: {fileID: 3400608006894603862}
+  playerCamera: {fileID: 1874173763}
   jumpRange: 1
   surfaceCheck: {fileID: 918415806}
   surfaceDistance: 0.4
@@ -37123,7 +37123,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 4960326004361403439}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -55477,7 +55477,7 @@ MonoBehaviour:
   cC: {fileID: 1856931926343551121}
   gravity: -9.81
   animator: {fileID: 3336201162523329924}
-  playerCamera: {fileID: 3400608006894603862}
+  playerCamera: {fileID: 1874173763}
   jumpRange: 1
   surfaceCheck: {fileID: 918415806}
   surfaceDistance: 0.4
@@ -57520,7 +57520,7 @@ Transform:
   m_GameObject: {fileID: 3745814524196873447}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 544.27765, y: 12.474896, z: 402.9998}
+  m_LocalPosition: {x: 544.27765, y: 12.474896, z: 402.93945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -95102,7 +95102,7 @@ MonoBehaviour:
   cC: {fileID: 1856931926343551121}
   gravity: -9.81
   animator: {fileID: 3336201162523329924}
-  playerCamera: {fileID: 3400608006894603862}
+  playerCamera: {fileID: 1874173763}
   turnCalmTime: 0.1
   jumpRange: 1
   surfaceCheck: {fileID: 918415806}
@@ -127058,7 +127058,7 @@ MonoBehaviour:
   cC: {fileID: 1856931926343551121}
   gravity: -9.81
   animator: {fileID: 3336201162523329924}
-  playerCamera: {fileID: 3400608006894603862}
+  playerCamera: {fileID: 1874173763}
   jumpRange: 1
   surfaceCheck: {fileID: 918415806}
   surfaceDistance: 0.4
@@ -130949,7 +130949,7 @@ Transform:
   m_GameObject: {fileID: 8996097587747664962}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12278781, y: -0.69636434, z: 0.12278783, w: 0.6963642}
-  m_LocalPosition: {x: 543.7089, y: 12.053272, z: 402.49658}
+  m_LocalPosition: {x: 543.7089, y: 12.053272, z: 402.4729}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
