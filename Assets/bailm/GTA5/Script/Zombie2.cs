@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Zombie2 : MonoBehaviour
 {
     [Header("Zombie Health and Damage")]
-    private float zombieHealth = 100f;
+    public float zombieHealth = 100f;
     private float presentHealth;
     public float giveDamage = 5f;
     public HealthBar healthBar;
