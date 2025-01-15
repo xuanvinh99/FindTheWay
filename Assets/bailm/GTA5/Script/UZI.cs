@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UZI : MonoBehaviour
 {
-     public int maxReloads = 3; // Giới hạn số lần nạp đạn
+     public int maxReloads = 1010; // Giới hạn số lần nạp đạn
     private int remainingReloads;
         [Header("Player Settings")]
     public float turnCalmTime = 0.1f;
